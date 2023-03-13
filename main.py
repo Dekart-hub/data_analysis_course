@@ -1,3 +1,4 @@
+#Задача 1
 import pandas as pd
 
 import random, string
@@ -7,34 +8,39 @@ def randomword(length):
    letters = string.ascii_lowercase
    return ''.join(random.choice(letters) for i in range(length))
 
-#Задача 1
+#Задача 2
 #Читаем файл в датафрейм df и выводим его
 df = pd.read_csv("dataset/sgemm_product.csv")
 print(df)
 
-#Задача 2
+#Задача 3
 #Выводим первые 5 элементов dataframe
 print(df.head())
 
-#Задача 3
+#Задача 4
 #Выводим последние 5 элементов dataframe
 print(df.tail())
 
-#Задача 4
+#Задача 5
 #Выводим первые 20 элементов dataframe
 print(df.head(20))
 
-#Задача 5
+#Задача 6
 #Выводим колонку 'NWG' 2-мя разными способами
 print(df.NWG)
 print(df['NWG'])
 
-#Задача 6
+#Задача 7
+#Ввыводим несколько колонок
+print(df[['NWG', 'Run1 (ms)', 'Run1 (ms)']])
+
+
+#Задача 8
 #Добавление новой колонки, сгенерированной из существующих
 df['Total Runtime'] = df['Run1 (ms)'] + df['Run2 (ms)'] + df['Run3 (ms)'] + df['Run4 (ms)']
 print(df)
 
-#Задача 7
+#Задача 9
 #Переименовывание колонок (без сохранения в dataframe)
 df.rename(columns={
     'Run1 (ms)': 'run1',
@@ -43,7 +49,6 @@ df.rename(columns={
     'Run4 (ms)': 'run4'
 })
 
-#Задача 8
 #Переименовывание колонок (сохраненяя в dataframe)
 df.rename(columns={
     'Run1 (ms)': 'run1',
@@ -53,15 +58,17 @@ df.rename(columns={
 }, inplace=True)
 print(df)
 
-#Задача 9
+#Задача 10
 #Сохранение dataframe(df) в csv файл; чтение из этого файла в новый dataframe(df2)
 df.to_csv('newcsv.csv', index=False)
 df2 = pd.read_csv('newcsv.csv')
 print(df2)
 
-#Задача 10
+#Задача 11
 #Вывод dataframe с фильтром
-print(df[df.run1 < 100.00])
+df_tmp = df[df.run1 < 100.00]
+print(df_tmp)
+
 
 #Добавление колонки со случайноыми строковыми значениями, т.к. в исходном наборе данных такой не было
 #Но по заданию таковая требуется
@@ -70,7 +77,6 @@ for i in range(len(df.index)):
     rndStr += randomword(4) + ' '
 df.insert(len(df.columns), 'strcol', rndStr.split())
 
-#Задача 11
 #Прмиенение 2-ух фильтров к dataframe (строковый и численный)
 df2 = df[(df.run1 > 100.00) & (df.strcol.str.contains('a'))]
 print(df2)
@@ -83,5 +89,5 @@ df_web = pd.read_html('https://developer.mozilla.org/en-US/docs/Learn/HTML/Table
 print(len(df_web))
 
 #Задача 13
-#Вывод таблицы
+#Вывод таблицы из прошлого задания
 print(df_web[0])
