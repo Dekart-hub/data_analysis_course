@@ -11,12 +11,15 @@ def random_dates(start, end, n=10):
 
     return pd.to_datetime(np.random.randint(start_u, end_u, n), unit='s')
 
-
+# Задача 3.
 # Чтение файла в датафрейм
 df = pd.read_csv('../dataset/sgemm_product.csv')
+
+# Задача 4.
 # Вывод количества наблюдений
 print(df.shape[0])
 
+# Задача 5.
 # Разбиение данных на части и сохранение их в отдельные файлы
 num = 1
 for i in range(0, df.shape[0], 50_000):
@@ -24,6 +27,7 @@ for i in range(0, df.shape[0], 50_000):
     tmp.to_csv(f'parts/part_{num}.csv', index=False)
     num += 1
 
+# Задача 7.
 # Соединение частей данных в один набор данных
 df_merge = pd.DataFrame()
 for f in os.listdir('parts/'):
@@ -31,10 +35,12 @@ for f in os.listdir('parts/'):
     df_merge = pd.concat([df_merge, tmp])
 print(df_merge)
 
+# Задача 8.
 # Сброс индексов в получившемся наборе данных
 df_merge.reset_index(inplace=True, drop=True)
 print(df_merge)
 
+# Задача 9.
 # Агрегация данных из dataframe
 df = df \
     .groupby(['MWG', 'NWG', 'KWG', 'MDIMC', 'NDIMC', 'MDIMA', 'NDIMB', 'KWI', 'VWM', 'VWN', 'STRM', 'STRN', 'SA', 'SB'],
@@ -51,23 +57,26 @@ df = df \
 df.to_csv('group.csv')
 print(df)
 
+# Задача 10.
 # Вывод информации о dataframe
 print(df.info)
-
 # Генерация случайных дат и добавление их к dataframe
 start = pd.to_datetime('2015-01-01')
 end = pd.to_datetime('2018-01-01')
 df.insert(len(df.columns), 'date', random_dates(start, end, df.shape[0]))
 print(df)
 
+# Задача 11.
 # Добавление колонки для дней недели и определение их из дат каждой строки
 df['day name'] = df.date.dt.day_name()
 print(df)
 
+# Задача 12.
 # Агрегация dataframe по дням недели
 df_tmp = df.groupby('day name').count().rename(columns={'date': 'count'})
 print(df_tmp)
 
-#
+# Задача 13.
+# Построение графика по предыдущему шагу
 diag = plt.bar(df_tmp.index, df_tmp['count'])
 plt.show()
